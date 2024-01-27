@@ -1,9 +1,18 @@
 from flask import Flask, request, jsonify
-from db import ExecuteUpdate
-from SqlQuarys import insertSipetransaction,insertHelathcheck
+from db import ExecuteUpdate,ExecuteGetQuery
+from SqlQuarys import insertSipetransaction,insertHelathcheck,gethealthstatusquary
 from datetime import datetime, timedelta
+from datetime import datetime
 
 app = Flask(__name__)
+
+@app.route('/')
+def INDEX():
+    try:
+        return jsonify({'message': 'Apis'}), 200
+
+    except Exception as e:
+        return jsonify({'error': str(e)}), 500
 
 @app.route('/SwipeTransactions', methods=['POST'])
 def insert_data():
@@ -13,7 +22,7 @@ def insert_data():
         result_time = datetime.utcnow() + timedelta(hours=5, minutes=30)
         quary = insertSipetransaction.format(data['superId'], data['RID'], data['ticketType'], data['BRN'], data['GATE'],
                        data['availableAdultEntryCount'], data['totalAdultEntryCount'], data['bookingDate'],
-                       str(result_time), 1)
+                       str(result_time), 1,data['GATETYPE'])
 
         connection = ExecuteUpdate(quary)
         return jsonify({'message': 'Data inserted successfully'}), 200
@@ -32,10 +41,38 @@ def HealthStatus():
     except Exception as e:
         return jsonify({'error': str(e)}), 500
 
-@app.route('/')
-def INDEX():
+@app.route('/GetHealthStatus')
+def GetHealthStatus():
     try:
-        return jsonify({'message': 'Apis'}), 200
+        typeid = request.args.get('typeid', default='typeid')
+        gate = request.args.get('gate', default='gate')
+        GATETYPE = request.args.get('GATETYPE', default='GATETYPE')
+
+        createdon = request.args.get('createdon', default='createdon between createdon and createdon')
+
+        if typeid == '' or typeid == '0':
+            typeid = 'typeid'
+        if gate == '' or gate == '0':
+            gate = 'gate'
+        else:
+            gate = f"'{gate}'"
+
+        if GATETYPE == '' or GATETYPE == '0':
+            GATETYPE = 'GATETYPE'
+        else:
+            GATETYPE = f"'{GATETYPE}'"
+
+
+        if createdon == '' or createdon == '0':
+            createdon = 'createdon between createdon and createdon'
+        else:
+            createdon = f"createdon between '{createdon} 00:00:01' and '{createdon} 23:59:59'"
+
+        quary = gethealthstatusquary.format(typeid, gate, createdon,GATETYPE)
+        print(quary)
+        result = ExecuteGetQuery(quary)
+
+        return jsonify(result), 200
 
     except Exception as e:
         return jsonify({'error': str(e)}), 500
