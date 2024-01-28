@@ -12,3 +12,7 @@ VALUES ({0}, '{1}', '{2}', '{3}',DATE_ADD(UTC_TIMESTAMP(), INTERVAL '5:30' HOUR_
 gethealthstatusquary = """select * from zoohealthstatus where typeid = {0} 
 and gate = {1} and 
 {2} and GATETYPE = {3}"""
+
+getSwipetransactionquary = """select * from zooswipetransactions where superid = superid and bid = {0} and 
+tickettype = {1} and gate= {2} and gatetype = {3}
+and bookingdate = {4};"""

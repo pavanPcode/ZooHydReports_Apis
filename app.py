@@ -1,6 +1,6 @@
 from flask import Flask, request, jsonify
 from db import ExecuteUpdate,ExecuteGetQuery
-from SqlQuarys import insertSipetransaction,insertHelathcheck,gethealthstatusquary
+from SqlQuarys import insertSipetransaction,insertHelathcheck,gethealthstatusquary,getSwipetransactionquary
 from datetime import datetime, timedelta
 from datetime import datetime
 
@@ -41,6 +41,7 @@ def HealthStatus():
     except Exception as e:
         return jsonify({'error': str(e)}), 500
 
+
 @app.route('/GetHealthStatus')
 def GetHealthStatus():
     try:
@@ -69,6 +70,51 @@ def GetHealthStatus():
             createdon = f"createdon between '{createdon} 00:00:01' and '{createdon} 23:59:59'"
 
         quary = gethealthstatusquary.format(typeid, gate, createdon,GATETYPE)
+        result = ExecuteGetQuery(quary)
+
+        return jsonify(result), 200
+
+    except Exception as e:
+        return jsonify({'error': str(e)}), 500
+
+
+
+@app.route('/getSwipetransaction')
+def getSwipetransaction():
+    try:
+        bid = request.args.get('bid', default='bid')
+        tickettype = request.args.get('tickettype', default='tickettype')
+        gate = request.args.get('gate', default='gate')
+        GATETYPE = request.args.get('gatetype', default='gatetype')
+        bookingdate = request.args.get('bookingdate', default='bookingdate')
+
+        if bid == '' or bid == '0':
+            bid = 'bid'
+        else :
+            bid = f"'{bid}'"
+
+        if gate == '' or gate == '0':
+            gate = 'gate'
+        else:
+            gate = f"'{gate}'"
+
+        if GATETYPE == '' or GATETYPE == '0':
+            GATETYPE = 'GATETYPE'
+        else:
+            GATETYPE = f"'{GATETYPE}'"
+
+
+        if tickettype == '' or tickettype == '0':
+            tickettype = 'tickettype'
+        else:
+            tickettype = f" '{tickettype}' "
+
+        if bookingdate == '' or bookingdate == '0':
+            bookingdate = 'bookingdate'
+        else:
+            bookingdate = f" '{bookingdate}' "
+
+        quary = getSwipetransactionquary.format(bid, tickettype, gate,GATETYPE,bookingdate)
         print(quary)
         result = ExecuteGetQuery(quary)
 
@@ -76,6 +122,10 @@ def GetHealthStatus():
 
     except Exception as e:
         return jsonify({'error': str(e)}), 500
+
+
+
+
 
 if __name__ == '__main__':
     app.run()
