@@ -115,7 +115,6 @@ def getSwipetransaction():
             bookingdate = f" '{bookingdate}' "
 
         quary = getSwipetransactionquary.format(bid, tickettype, gate,GATETYPE,bookingdate)
-        print(quary)
         result = ExecuteGetQuery(quary)
 
         return jsonify(result), 200
