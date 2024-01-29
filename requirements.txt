@@ -1,3 +1,4 @@
 Flask
 mysql-connector-python
 pytz
+flask_cors==4.0.0
