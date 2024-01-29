@@ -1,6 +1,6 @@
 from flask import Flask, request, jsonify
 from db import ExecuteUpdate,ExecuteGetQuery
-from SqlQuarys import insertSipetransaction,insertHelathcheck,gethealthstatusquary,getSwipetransactionquary
+from SqlQuarys import insertSipetransaction,insertHelathcheck,gethealthstatusquary,getSwipetransactionquary,loginquary
 from datetime import datetime, timedelta
 from datetime import datetime
 from flask_cors import CORS
@@ -15,6 +15,18 @@ def INDEX():
 
     except Exception as e:
         return jsonify({'error': str(e)}), 500
+
+@app.route('/login', methods=['POST'])
+def login():
+    try:
+        data = request.json
+        quary = loginquary.format(data['name'],data['password'])
+        result = ExecuteGetQuery(quary)
+        return jsonify(result), 200
+
+    except Exception as e:
+        return jsonify({'error': str(e)}), 500
+
 
 @app.route('/SwipeTransactions', methods=['POST'])
 def insert_data():

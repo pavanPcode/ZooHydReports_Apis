@@ -16,3 +16,5 @@ and gate = {1} and
 getSwipetransactionquary = """select * from zooswipetransactions where superid = superid and bid = {0} and 
 tickettype = {1} and gate= {2} and gatetype = {3}
 and bookingdate = {4};"""
+
+loginquary = """select * from `users`  where name = '{0}' and password = '{1}' """
