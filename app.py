@@ -5,7 +5,8 @@ from datetime import datetime, timedelta
 from datetime import datetime
 
 app = Flask(__name__)
-
+cors = CORS(app)
+app.config['CORS_HEADERS'] = 'application/json'
 @app.route('/')
 def INDEX():
     try:
