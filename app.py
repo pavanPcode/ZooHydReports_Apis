@@ -3,6 +3,7 @@ from db import ExecuteUpdate,ExecuteGetQuery
 from SqlQuarys import insertSipetransaction,insertHelathcheck,gethealthstatusquary,getSwipetransactionquary
 from datetime import datetime, timedelta
 from datetime import datetime
+from flask_cors import CORS
 
 app = Flask(__name__)
 cors = CORS(app)
