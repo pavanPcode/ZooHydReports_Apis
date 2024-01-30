@@ -1,7 +1,7 @@
 insertSipetransaction = """
         INSERT INTO ZooSwipeTransactions (superId, BID, ticketType, BRN, GATE, availableAdultEntryCount,
                                        totalAdultEntryCount, bookingDate, createdOn, isactive,GATETYPE)
-        VALUES ({0}, '{1}', '{2}', '{3}', '{4}', {5}, {6}, '{7}', '{8}', 1,'{9}')
+        VALUES ({0}, '{1}', '{2}', '{3}', '{4}', {5}, {6}, '{7}', '{8}', {9},'{10}')
         """
 
 insertHelathcheck = """INSERT INTO ZooHealthStatus (typeid, message, gate, ErrorMessage,createdOn,superid,GateType)
